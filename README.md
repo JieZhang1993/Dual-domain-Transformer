@@ -1,4 +1,3 @@
-# Dual-domain-Transformer
 <div align="center">
 
 <h1>Boundary-aware Spatial and Frequency Dual-domain Transformer for Remote Sensing Urban Images Segmentation</h1>
