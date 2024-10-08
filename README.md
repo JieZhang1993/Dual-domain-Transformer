@@ -19,7 +19,7 @@
 </div>
 
 
-<img src="https://github.com/user-attachments/assets/28675180-02de-476e-ad01-7c2138a2a943" width="100%"/>
+<img src="./assets/Fig11_Zeebrugge对比图.png" width="100%"/>
 (a) The visualization of the feature map in the encoder's final layer. Colors represent normalized pixel values, with red regions indicating high network attention. From left to right, it shows the original image, the feature map from the spatial-domain method (hybrid CNN-ViT\cite{ref30}), the feature map from our implementation of the FFT following the architecture outlined in \cite{ref14}), and the feature map from our method. (b) The Ground Truth (GT) and the segmentation results corresponding to the different methods in (a). The analysis illustrates that the spatial-domain and frequency-domain methods are complementary for feature extraction, with segmentation more accurate in areas receiving high attention. Our method leverages both domains to jointly extract features, capturing more comprehensive features.
 
 </div>
@@ -31,53 +31,36 @@
 
 
 ```
-# 1. install SimFeatUp
-# refer to https://github.com/likyoo/SimFeatUp
-
-# 2. git clone this repository
-git clone https://github.com/mc-lan/ClearCLIP.git
-cd ClearCLIP
-
-# 3. create new anaconda env
-conda create -n SegEarth python=3.9
-conda activate SegEarth
-
 # install torch and dependencies
 pip install -r requirements.txt
-# The dependent versions are not strict, and in general you only need to pay attention to mmcv and mmsegmentation.
 ```
 
 
 ## Datasets
+
 We include the following dataset configurations in this repo: 
 1) `ISPRS Vaihingen`: https://www.isprs.org/education/benchmarks/UrbanSemLab/
 2) `ISPRS Potsdam`: https://www.isprs.org/education/benchmarks/UrbanSemLab/
 3) `Zeebrugge`: Campos-Taberner M, Romero-Soriano A, Gatta C, et al. Processing of extremely high-resolution Lidar and RGB data: outcome of the 2015 IEEE GRSS data fusion contest–part a: 2-D contest[J]. IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing, 2016, 9(12): 5547-5559.
 
-
-
-## Quick Inference
-```
-python demo.py
-```
-
-## Model evaluation
-Single-GPU:
+Data Preprocessing
 
 ```
-python eval.py --config ./config/cfg_DATASET.py --workdir YOUR_WORK_DIR
+python ./tools/vaihingen_patch_split.py 
+python ./tools/potsdam_patch_split.py 
+python ./tools/zeebrugge_patch_split.py 
 ```
 
-Multi-GPU:
+## Training
 ```
-bash ./dist_test.sh ./config/cfg_DATASET.py
+python train_supervision.py -c config/<dataset name>/dual_domain_transformer.py
 ```
 
-Evaluation on all datasets:
+## Evaluation
 ```
-python eval_all.py
+python <dataset name>_test.py
 ```
-Results will be saved in `results.xlsx`.
+
 
 ## Results
 
